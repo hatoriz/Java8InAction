@@ -7,39 +7,51 @@ public class FilteringApples{
 
     public static void main(String ... args){
 
+
         List<Apple> inventory = Arrays.asList(new Apple(80,"green"),
                                               new Apple(155, "green"),
-                                              new Apple(120, "red"));	
+                                              new Apple(120, "brown"),
+                                                new Apple(50,"yellow"));
 
         // [Apple{color='green', weight=80}, Apple{color='green', weight=155}]
         List<Apple> greenApples = filterApples(inventory, FilteringApples::isGreenApple);
         System.out.println(greenApples);
-        
+
         // [Apple{color='green', weight=155}]
         List<Apple> heavyApples = filterApples(inventory, FilteringApples::isHeavyApple);
         System.out.println(heavyApples);
-        
+
         // [Apple{color='green', weight=80}, Apple{color='green', weight=155}]
         List<Apple> greenApples2 = filterApples(inventory, (Apple a) -> "green".equals(a.getColor()));
         System.out.println(greenApples2);
-        
+
         // [Apple{color='green', weight=155}]
         List<Apple> heavyApples2 = filterApples(inventory, (Apple a) -> a.getWeight() > 150);
         System.out.println(heavyApples2);
-        
-        // []
-        List<Apple> weirdApples = filterApples(inventory, (Apple a) -> a.getWeight() < 80 || 
-                                                                       "brown".equals(a.getColor()));
-        System.out.println(weirdApples);
+
+        // predicate
+        List<Apple> weirdApples = filterApples(inventory, (Apple apple) -> apple.getWeight() < 60 || "brown".equals(apple.getColor()));
+
+        System.out.println("Weird:" + weirdApples);
     }
 
     public static List<Apple> filterGreenApples(List<Apple> inventory){
+
+        // we can return result in the list of "Apple" class
         List<Apple> result = new ArrayList<>();
+
+        // looping to get "Apple" from "inventory" list object
         for (Apple apple: inventory){
+
+            // String "green" check equal to "Apple"'s color
             if ("green".equals(apple.getColor())) {
+
+                // if yes add "Apple" object into list of Apple
                 result.add(apple);
             }
         }
+
+        // return list of Apple
         return result;
     }
 
@@ -61,10 +73,15 @@ public class FilteringApples{
         return apple.getWeight() > 150;
     }
 
+    // predicate
     public static List<Apple> filterApples(List<Apple> inventory, Predicate<Apple> p){
+
         List<Apple> result = new ArrayList<>();
+
         for(Apple apple : inventory){
+
             if(p.test(apple)){
+
                 result.add(apple);
             }
         }
@@ -72,9 +89,12 @@ public class FilteringApples{
     }       
 
     public static class Apple {
+
+        // encapsulated property
         private int weight = 0;
         private String color = "";
 
+        //
         public Apple(int weight, String color){
             this.weight = weight;
             this.color = color;
@@ -97,10 +117,7 @@ public class FilteringApples{
         }
 
         public String toString() {
-            return "Apple{" +
-                   "color='" + color + '\'' +
-                   ", weight=" + weight +
-                   '}';
+            return color + " apple of " + weight;
         }
     }
 
